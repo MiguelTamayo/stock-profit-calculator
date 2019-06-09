@@ -1,0 +1,32 @@
+#search-bar {
+	background-color: green;
+}
+#line-graph {
+	background-color: red;
+}
+#profit {
+	background-color: blue;
+}
+#time-stamps{
+	background-color: purple;
+}
+#search{
+	padding-left: 10px;
+	width: inherit;
+}
+#footer{
+	background-color: yellow;
+}
+.results{
+	padding: 0;
+	list-style: none;
+	border: 1px solid black;
+}
+
+li{ 
+	background: LightSlateGray; 
+	padding-left: 10px;
+}
+li:nth-child(odd){ 
+	background: LightSteelBlue; 
+}
