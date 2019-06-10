@@ -14,6 +14,10 @@
 	padding-left: 10px;
 	width: inherit;
 }
+#trades{
+	overflow-y: auto;
+	max-height: 100px;
+}
 #footer{
 	background-color: yellow;
 }
