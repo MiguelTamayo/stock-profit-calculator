@@ -18,7 +18,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12" id="search-bar">
-					<input type="text" id="search" name="search" placeholder="Enter Stock Symbol">
+					<input type="text" id="search" name="search" placeholder="Enter Stock Symbol" ng-keyup="$event.keyCode == 13 && search()">
 					<ul class="results">
 						<li><span ng-bind="result"></span></li>
 						<li><span>result 2</span></li>
