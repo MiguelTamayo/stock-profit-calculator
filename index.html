@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="profitCalculator">
 	<head>
 		<title>Profit Calculator</title>
 
@@ -9,14 +9,18 @@
     	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     	<link rel="stylesheet" href="css/main.css">
 
+    	<!-- scripts-->
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    	<script type="text/javascript" src="js/app.js"></script>
+
 	</head>
-	<body>
+	<body ng-controller="profitController">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12" id="search-bar">
 					<input type="text" id="search" name="search" placeholder="Enter Stock Symbol">
 					<ul class="results">
-						<li><span>result 1</span></li>
+						<li><span ng-bind="result"></span></li>
 						<li><span>result 2</span></li>
 						<li><span>result 3</span></li>
 					</ul>
