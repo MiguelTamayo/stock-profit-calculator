@@ -21,16 +21,34 @@
 #footer{
 	background-color: yellow;
 }
+#date-range{
+	background-color: orange;
+	list-style: none;
+}
+#date-range ul{
+	display: table;
+	padding: 0;
+	border: 1px solid;
+}
+#date-range li{
+	display: inline-block;
+	float: left;
+	padding: 5px;
+	border: 1px solid;
+}
+#date-range li:hover{
+	background-color: blue;
+}
 .results{
 	padding: 0;
 	list-style: none;
 	border: 1px solid black;
 }
 
-li{ 
+.results li{ 
 	background: LightSlateGray; 
 	padding-left: 10px;
 }
-li:nth-child(odd){ 
+.results li:nth-child(odd){ 
 	background: LightSteelBlue; 
 }
