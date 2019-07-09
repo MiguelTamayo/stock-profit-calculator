@@ -13,6 +13,8 @@
     	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
 		<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
     	<script src="https://cdn.zingchart.com/angular/zingchart-angularjs.js"></script>
+    	<script type="text/javascript" src="js/API-Factory.js"></script>
+    	<script type="text/javascript" src="js/CalculateProfit-Factory.js"></script>
     	<script type="text/javascript" src="js/app.js"></script>
 
 	</head>
@@ -41,7 +43,7 @@
 			<div class="row">
 				<div class="col-md-8" id="line-graph">
 					<p>graph</p>
-					<div zingchart id="chart-1" zc-json="myJson" zc-width="100%" zc-height="568px"></div>
+					<div zingchart id="chart-1" zc-json="chartJson" zc-width="100%" zc-height="568px"></div>
 				</div>
 				<div class="col-md-4" id="profit">
 					<p ng-bind="stockSymbol"></p>
@@ -54,7 +56,7 @@
 				<div class="col-md-12" id="time-stamps">
 					<p>time stamps of trades made</p>
 					<div id="trades">
-						<p ng-repeat="timestamp in timestamps" ng-bind=timestamp></p>
+						<p ng-repeat="trade in trades track by $index" ng-bind="trade"></p>
 					</div>
 				</div>
 			</div>
