@@ -13,78 +13,78 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         var trades = [];
         var profit = 0;
 
-
-
         var buy = 0;
         var sell = 0;
         var bought = false;
-        for (var i = 0; i < symbolData.length; i++) {
-            var element = symbolData[i];
+
+        //remove null values from dataset
+        var noNull = [];
+        for (var i = symbolData.length - 1; i >= 0; i--) {
+            //only push non null close values
+            if(symbolData[i].close != null){
+                noNull.push(symbolData[i]);
+            }
+        }
+        console.log("no null",noNull);
+
+
+        for (var i = noNull.length - 1; i >= 1; i--) {
+            var currentElement = noNull[i];
+            var currentElementCloseValue = noNull[i].close;
+            var nextElementCloseValue = noNull[i-1].close;
 
             //store values for chart 
-            stockPrices.push(element.close); 
-            unixTimestamps.push(parseInt((new Date(element.date+'T'+element.minute+':00').getTime()).toFixed(0)));
+            stockPrices.push(currentElementCloseValue); 
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
             
-            //make sure element closing price is not null
-            if(element.close != null){
-
-                //check for new minY
-                if(element.close < minY){
-                    minY = element.close;
-                }else if(minY === undefined){
-                    minY = element.close;
-                }
-
-                //check for new maxY
-                if(element.close > maxY){
-                    maxY = element.close;
-                }else if(maxY === undefined){
-                    maxY = element.close;
-                }
-
-                //algo
-                if(!bought){
-                    //ignore values that are null
-                    if((symbolData[i].close != null) && (symbolData[i+1].close != null)){
-                        //buy before rise
-                        if((symbolData[i].close < symbolData[i+1].close)){
-                            buy = symbolData[i];
-                            bought = true;
-                        }
-                    }
-                }
-                else{
-                    //sell if end of day and bought and no decline
-                    if((i == symbolData.length-1) && (symbolData[i].close != null)){
-                                sell = symbolData[i];
-                                bought = false;
-                                console.log("buy at: "+buy.close);
-                                console.log("sell at end: "+sell.close);
-                                trades.push("buy at: "+buy.close);
-                                trades.push("sell at: "+sell.close);
-                    }else{
-                        //ignore values that are null
-                        if((symbolData[i].close != null) && (symbolData[i+1].close != null)){
-                            //sell before decline
-                            if(symbolData[i].close > symbolData[i+1].close){
-                                sell = symbolData[i];
-                                bought = false;
-                                console.log("buy at: "+buy.close);
-                                console.log("sell at: "+sell.close);
-                                trades.push("buy at: "+buy.close);
-                                trades.push("sell at: "+sell.close);
-                            }
-                        }
-                    }
-                }
-
+            //check for new minY
+            if(currentElementCloseValue < minY){
+                minY = currentElementCloseValue;
+            }else if(minY === undefined){
+                minY = currentElementCloseValue;
             }
 
+            //check for new maxY
+            if(currentElementCloseValue > maxY){
+                maxY = currentElementCloseValue;
+            }else if(maxY === undefined){
+                maxY = currentElementCloseValue;
+            }
+
+            if(!bought){
+                //buy before rise
+                if(currentElementCloseValue < nextElementCloseValue){
+                    buy = currentElement;
+                    bought = true;
+                }
+            }
+            else{
+                //sell before decline
+                if(currentElementCloseValue > nextElementCloseValue){
+                    sell = currentElement;
+                    bought = false;
+                    trades.push("buy at: "+buy.close);
+                    trades.push("sell at: "+sell.close);
+                }
+            }
         }
+
+        //push final element
+        stockPrices.push(noNull[0].close);
+        unixTimestamps.push(parseInt((new Date(noNull[0].date+'T'+noNull[0].minute+':00').getTime()).toFixed(0)));
+
+        //if bought but didn't sell, sell at last non null date
+        if(bought){
+            sell = noNull[0];
+            bought = false;
+            trades.push("buy at: "+buy.close);
+            trades.push("sell at: "+sell.close);
+        }
+
 
         interval = Math.round(maxY*.01);
         minY = Math.round(minY*.99);
-        maxY = Math.round(maxY*1.01);
+        maxY = Math.ceil(maxY*1.01);
         chartValues = ""+minY+":"+maxY+":"+interval;
 
         var json = {
