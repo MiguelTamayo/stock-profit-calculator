@@ -2,12 +2,38 @@ var application = angular.module("profitCalculator", ['zingchart-angularjs', 'ap
 
 application.controller("profitController", function($scope, $http, $filter, apiData, profitCalculator) {
 
-    $scope.result = "test";
-    //scope.symbolList = apiData.getSymbols
+    var symbolList;
 
-    $scope.autoComplete = function(searchBarInput) {
-    	//filter symbollist for searchbarinput
-    	//limit to ten
+    //API call for symbols available
+    apiData.getSymbolList().then(function successCallback (response){
+    	console.log("success, got a response!",response.data);
+    	symbolList = response.data;
+    }, function errorCallback(response){
+    	console.log("there was an error!");
+    });
+
+    $scope.autoComplete = function() {
+    	$scope.results = [];
+
+    	//check if symbolList is defined and that search entry is not empty
+    	if((symbolList != undefined) && ($scope.symbol != "")){
+
+    		var patt = new RegExp("^"+$scope.symbol, "i");
+
+	    	//filter symbolList
+	    	for (var i = 0, len = symbolList.length; i < len; i++) {
+	    		if(patt.test(symbolList[i].symbol)){
+	    			$scope.results.push(symbolList[i]);
+	    		}
+	    	}
+
+	    	//if no results return message
+	    	if($scope.results.length == 0){
+	    		$scope.results.push({symbol:"No Results found",name:"try another symbol"});
+	    	}
+    	}else{
+    		console.log("symbols undefined!");
+    	}
     };
 
     $scope.search = function() {
@@ -20,10 +46,7 @@ application.controller("profitController", function($scope, $http, $filter, apiD
             var data = response.data;
             //check to see if response data is not empty
             if(data != []) {
-                console.log("response received!");
-                console.log("data=", data);
                 var calculation = profitCalculator.getCalculation(data);
-                console.log("calc = ",calculation);
                 $scope.chartJson = calculation.chartJSON;
                 $scope.trades = calculation.trades;
                 $scope.profit = calculation.profit;
@@ -33,6 +56,16 @@ application.controller("profitController", function($scope, $http, $filter, apiD
         }, function errorCallback(response) {
             console.log("there was an error with the api call!");
         });
+    };
+
+    $scope.searchBarKeyInput = function(eventKey){
+    	//check if enter key has been pressed
+    	if(eventKey.keyCode == 13){
+    		$scope.search();
+    	}else{
+    		//autocomplete results
+    		$scope.autoComplete();
+    	}
     };
 
 });
