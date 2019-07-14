@@ -22,9 +22,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12" id="search-bar">
-					<input type="text" id="search" ng-model="symbol" placeholder="Enter Stock Symbol" ng-keyup="searchBarKeyInput($event)">
+					<input type="text" id="search" ng-model="symbol" placeholder="Search Stock Symbol" ng-keyup="searchBarKeyInput($event)">
 					<ul class="results">
-						<li ng-repeat="result in results">
+						<li ng-repeat="result in results" ng-class="result.class">
 							<span ng-bind="result.symbol"></span> | <span ng-bind="result.name"></span>
 						</li>
 					</ul>

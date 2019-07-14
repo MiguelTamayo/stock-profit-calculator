@@ -39,6 +39,9 @@
 #date-range li:hover{
 	background-color: blue;
 }
+.highlighted{
+	background-color: red !important;
+}
 .results{
 	padding: 0;
 	list-style: none;
