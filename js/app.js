@@ -67,7 +67,7 @@ application.controller("profitController", function($scope, $http, $filter, apiD
             var data = response.data;
             //check to see if response data is not empty
             if(data.length != 0) {
-                var calculation = profitCalculator.getCalculation(data);
+                var calculation = profitCalculator.getCalculation(data, range);
                 $scope.chartJson = calculation.chartJSON;
                 $scope.trades = calculation.trades;
                 $scope.initialInvestment = calculation.initialInvestment;

@@ -2,7 +2,7 @@ var profitCalculatorFactory = angular.module('profitCalculatorFactory', []);
 profitCalculatorFactory.factory('profitCalculator',[function (){
     var profitCalculator = {};
 
-    profitCalculator.getCalculation = function(symbolData){
+    profitCalculator.getCalculation = function(symbolData, dateRange){
 
         var unixTimestamps = [];
         var stockPrices = [];
@@ -36,9 +36,17 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
 
             //store values for chart 
             stockPrices.push(currentElementCloseValue); 
-            //TODO ADD TIMESTAMP LOGIC FOR OTHER RANGES
-            unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
             
+            if(dateRange == "Today"){
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
+            }else if(dateRange == "5D"){
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+            }else if(dateRange == "1M"){
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+            }else if(dateRange == "Date"){
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
+            }
+
             //check for new minY
             if(currentElementCloseValue < minY){
                 minY = currentElementCloseValue;
@@ -79,8 +87,15 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
 
         //push final element
         stockPrices.push(noNull[0].close);
-        unixTimestamps.push(parseInt((new Date(noNull[0].date+'T'+noNull[0].minute+':00').getTime()).toFixed(0)));
-
+        if(dateRange == "Today"){
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
+        }else if(dateRange == "5D"){
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+        }else if(dateRange == "1M"){
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+        }else if(dateRange == "Date"){
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
+        }
         //if bought but didn't sell, sell at last non null date
         if(bought){
             sell = noNull[0];
@@ -95,7 +110,6 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
             trades.push(trade);
         }
 
-
         //calculate return based on value of 100 shares at max recorded price
         var maxSharePrice = maxY;
         var sharesOwned = 100;
@@ -106,7 +120,6 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
             sharesOwned = Math.floor(grossReturn/trades[i].buy);
             grossReturn = grossReturn - (sharesOwned * trades[i].buy);
             grossReturn = grossReturn + (sharesOwned * trades[i].sell);
-            //mmddyyyy 930 buy at trades[i].buy  mmddyyyy 930 sell at trades.sell
             trades[i].tradeMessage = ""+trades[i].buyTime+" buy at $"+trades[i].buy+" "+trades[i].sellTime+" sell at $"+trades[i].sell;
             sharesOwned = 0;
         }
