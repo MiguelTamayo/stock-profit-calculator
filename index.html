@@ -22,7 +22,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12" id="search-bar">
-					<input type="text" id="search" ng-model="symbol" placeholder="Search Stock Symbol" ng-keyup="searchBarKeyInput($event)">
+					<input type="text" id="search" ng-model="symbol" placeholder="Search Stock Symbol" ng-keydown="arrowKeyControls($event)" ng-keyup="searchControls($event)">
 					<ul class="results">
 						<li ng-repeat="result in results" ng-class="result.class">
 							<span ng-bind="result.symbol"></span> | <span ng-bind="result.name"></span>
@@ -33,10 +33,9 @@
 			<div class="row">
 				<div class="col-md-12" id="date-range">
 					<ul>
-						<li><span>Today</span></li>
-						<li><span>5 Days</span></li>
-						<li><span>1 Month</span></li>
-						<li><span>Date</span></li>
+						<li ng-repeat="range in dateRanges" ng-click="setRange(range)" ng-style="">
+							<span ng-bind="range"></span>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -46,17 +45,17 @@
 					<div zingchart id="chart-1" zc-json="chartJson" zc-width="100%" zc-height="568px"></div>
 				</div>
 				<div class="col-md-4" id="profit">
-					<p ng-bind="stockSymbol"></p>
-					<p ng-bind="currentPrice"></p>
-					<p><span ng-bind="beggining"></span>-<span ng-bind="end"></span></p>
-					<p>total percentage</p>
+					<p>Symbol: <span ng-bind="stockSymbol"></span></p>
+					<p>Initial Investment: $<span ng-bind="initialInvestment"></span></p>
+					<p>Gross Return: $<span ng-bind="grossReturn"></span></p>
+					<p>Profit: $<span ng-bind="profit"></span></p>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12" id="time-stamps">
 					<p>time stamps of trades made</p>
 					<div id="trades">
-						<p ng-repeat="trade in trades track by $index" ng-bind="trade"></p>
+						<p ng-repeat="trade in trades track by $index" ng-bind="trade.tradeMessage"></p>
 					</div>
 				</div>
 			</div>

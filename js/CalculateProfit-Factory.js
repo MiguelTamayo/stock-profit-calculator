@@ -11,6 +11,7 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         var interval;
         var chartValues;
         var trades = [];
+        var trade = {};
         var profit = 0;
 
         var buy = 0;
@@ -35,6 +36,7 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
 
             //store values for chart 
             stockPrices.push(currentElementCloseValue); 
+            //TODO ADD TIMESTAMP LOGIC FOR OTHER RANGES
             unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
             
             //check for new minY
@@ -63,8 +65,14 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
                 if(currentElementCloseValue > nextElementCloseValue){
                     sell = currentElement;
                     bought = false;
-                    trades.push("buy at: "+buy.close);
-                    trades.push("sell at: "+sell.close);
+                    trade = {
+                        buy: buy.close,
+                        buyTime: buy.date+" "+buy.minute,
+                        sell: sell.close,
+                        sellTime: sell.date+" "+sell.minute,
+                        tradeMessage: ""
+                    }
+                    trades.push(trade);
                 }
             }
         }
@@ -77,10 +85,31 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         if(bought){
             sell = noNull[0];
             bought = false;
-            trades.push("buy at: "+buy.close);
-            trades.push("sell at: "+sell.close);
+            trade = {
+                buy: buy.close,
+                buyTime: buy.date+" "+buy.minute,
+                sell: sell.close,
+                sellTime: sell.date+" "+sell.minute,
+                tradeMessage: ""
+            }
+            trades.push(trade);
         }
 
+
+        //calculate return based on value of 100 shares at max recorded price
+        var maxSharePrice = maxY;
+        var sharesOwned = 100;
+        var initialInvestment = maxSharePrice * sharesOwned;
+        var grossReturn = initialInvestment;
+
+        for (var i = 0; i < trades.length; i++) {
+            sharesOwned = Math.floor(grossReturn/trades[i].buy);
+            grossReturn = grossReturn - (sharesOwned * trades[i].buy);
+            grossReturn = grossReturn + (sharesOwned * trades[i].sell);
+            //mmddyyyy 930 buy at trades[i].buy  mmddyyyy 930 sell at trades.sell
+            trades[i].tradeMessage = ""+trades[i].buyTime+" buy at $"+trades[i].buy+" "+trades[i].sellTime+" sell at $"+trades[i].sell;
+            sharesOwned = 0;
+        }
 
         interval = Math.round(maxY*.01);
         minY = Math.round(minY*.99);
@@ -182,7 +211,8 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         var calculation = {
             chartJSON: json,
             trades: trades,
-            profit: profit
+            initialInvestment: initialInvestment,
+            grossReturn: grossReturn
         };
 
         return calculation;

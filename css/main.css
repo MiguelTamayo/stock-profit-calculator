@@ -38,6 +38,7 @@
 }
 #date-range li:hover{
 	background-color: blue;
+	cursor: pointer;
 }
 .highlighted{
 	background-color: red !important;
