@@ -40,9 +40,9 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
             if(dateRange == "Today"){
                 unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
             }else if(dateRange == "5D"){
-                unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
             }else if(dateRange == "1M"){
-                unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
             }else if(dateRange == "Date"){
                 unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
             }
@@ -73,12 +73,22 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
                 if(currentElementCloseValue > nextElementCloseValue){
                     sell = currentElement;
                     bought = false;
-                    trade = {
-                        buy: buy.close,
-                        buyTime: buy.date+" "+buy.minute,
-                        sell: sell.close,
-                        sellTime: sell.date+" "+sell.minute,
-                        tradeMessage: ""
+                    if((dateRange=="Today") || (dateRange=="Date")){
+                        trade = {
+                            buy: buy.close,
+                            buyTime: buy.date+" "+buy.minute,
+                            sell: sell.close,
+                            sellTime: sell.date+" "+sell.minute,
+                            tradeMessage: ""
+                        }
+                    }else if((dateRange=="5D") || (dateRange=="1M")){
+                        trade = {
+                            buy: buy.close,
+                            buyTime: buy.date,
+                            sell: sell.close,
+                            sellTime: sell.date,
+                            tradeMessage: ""
+                        }
                     }
                     trades.push(trade);
                 }
@@ -90,9 +100,9 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         if(dateRange == "Today"){
             unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
         }else if(dateRange == "5D"){
-            unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
         }else if(dateRange == "1M"){
-            unixTimestamps.push(parseInt((new Date(currentElement.date+'T03:59:00').getTime()).toFixed(0)));
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
         }else if(dateRange == "Date"){
             unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
         }
@@ -100,13 +110,24 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         if(bought){
             sell = noNull[0];
             bought = false;
-            trade = {
-                buy: buy.close,
-                buyTime: buy.date+" "+buy.minute,
-                sell: sell.close,
-                sellTime: sell.date+" "+sell.minute,
-                tradeMessage: ""
-            }
+
+                if((dateRange=="Today") || (dateRange=="Date")){
+                    trade = {
+                        buy: buy.close,
+                        buyTime: buy.date+" "+buy.minute,
+                        sell: sell.close,
+                        sellTime: sell.date+" "+sell.minute,
+                        tradeMessage: ""
+                    }
+                }else if((dateRange=="5D") || (dateRange=="1M")){
+                    trade = {
+                        buy: buy.close,
+                        buyTime: buy.date,
+                        sell: sell.close,
+                        sellTime: sell.date,
+                        tradeMessage: ""
+                    }
+                }
             trades.push(trade);
         }
 
