@@ -13,10 +13,11 @@ application.controller("profitController", function($scope, $http, $filter, apiD
     	symbolList = response.data;
     }, function errorCallback(response){
     	console.log("there was an error!");
+    	alert("there was a problem with retrieving the symbols available for searching from IEX. Application will not work as planned. Please try refreshing page to try to solve issue");
     });
     $scope.dateRanges = [{span:"Today",class:""}, {span:"5D",class:""}, {span:"1M",class:""}];//TODO ADD "DATE"
     $scope.dateRanges[0].class = "selected";
-    $scope.selectedRange = $scope.dateRanges[0];
+    $scope.selectedRange = $scope.dateRanges[0].span;
 
 
     $scope.setRange = function(range){
@@ -87,10 +88,12 @@ application.controller("profitController", function($scope, $http, $filter, apiD
 
                  $scope.resultReturned = true;
             } else {
+            	alert("data returned empty! please try another symbol or change the range of the date");
                 console.log("response was empty!");
             }
         }, function errorCallback(response) {
             console.log("there was an error with the api call!");
+            alert("Error an issue has occurred with the request to the API");
         });
     };
 
