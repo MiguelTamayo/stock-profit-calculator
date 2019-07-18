@@ -5,6 +5,8 @@ application.controller("profitController", function($scope, $http, $filter, apiD
     var symbolList;
     var highlightedResultIndex = 0;
 
+    $scope.resultReturned = false;
+
     //API call for symbols available
     apiData.getSymbolList().then(function successCallback (response){
     	console.log("success, got a response!",response.data);
@@ -82,6 +84,8 @@ application.controller("profitController", function($scope, $http, $filter, apiD
                 $scope.profit = (calculation.grossReturn - calculation.initialInvestment).toFixed(2);
                 $scope.percentage = $scope.symbol.toUpperCase();
                 $scope.stockSymbol = $scope.symbol.toUpperCase();
+
+                 $scope.resultReturned = true;
             } else {
                 console.log("response was empty!");
             }

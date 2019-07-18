@@ -55,7 +55,7 @@
 			</div>
 
 			<!-- Chart & Calculations -->
-			<div class="row no-gutters bottom-buffer">
+			<div class="row no-gutters bottom-buffer" ng-show="resultReturned">
 				<!-- Chart -->
 				<div class="col-md-8 right-buffer">
 					<div id="line-graph">
@@ -74,7 +74,7 @@
 				</div>
 			</div>
 			<!-- Trades & Footer -->
-			<div class="row">
+			<div class="row" ng-show="resultReturned">
 				<div class="col-md-12">
 					<div id="time-stamps">
 						<p>Time stamps of trades made:</p>
@@ -84,7 +84,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
+			<div class="row" ng-show="resultReturned">
 				<div class="col-md-12" id="footer">
 					<a href="https://iexcloud.io">Data provided by IEX Cloud</a>
 				</div>
