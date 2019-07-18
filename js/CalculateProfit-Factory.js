@@ -40,9 +40,9 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
             if(dateRange == "Today"){
                 unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
             }else if(dateRange == "5D"){
-                unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T16:00:00').getTime()).toFixed(0)));
             }else if(dateRange == "1M"){
-                unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
+                unixTimestamps.push(parseInt((new Date(currentElement.date+'T16:00:00').getTime()).toFixed(0)));
             }else if(dateRange == "Date"){
                 unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
             }
@@ -100,9 +100,9 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         if(dateRange == "Today"){
             unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
         }else if(dateRange == "5D"){
-            unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T16:00:00').getTime()).toFixed(0)));
         }else if(dateRange == "1M"){
-            unixTimestamps.push(parseInt((new Date(currentElement.date+'T15:59:00').getTime()).toFixed(0)));
+            unixTimestamps.push(parseInt((new Date(currentElement.date+'T16:00:00').getTime()).toFixed(0)));
         }else if(dateRange == "Date"){
             unixTimestamps.push(parseInt((new Date(currentElement.date+'T'+currentElement.minute+':00').getTime()).toFixed(0)));
         }
@@ -234,7 +234,7 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
                 }
             },
             series: [{
-                text: "Site 1",
+                text: "Close Price",
                 values: stockPrices,
                 backgroundColor1: "#4AD8CC",
                 backgroundColor2: "#272822",
@@ -245,8 +245,8 @@ profitCalculatorFactory.factory('profitCalculator',[function (){
         var calculation = {
             chartJSON: json,
             trades: trades,
-            initialInvestment: initialInvestment,
-            grossReturn: grossReturn
+            initialInvestment: initialInvestment.toFixed(2),
+            grossReturn: grossReturn.toFixed(2)
         };
 
         return calculation;

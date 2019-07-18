@@ -12,13 +12,20 @@ application.controller("profitController", function($scope, $http, $filter, apiD
     }, function errorCallback(response){
     	console.log("there was an error!");
     });
-
-    $scope.dateRanges = ["Today", "5D", "1M"];//TODO ADD "DATE"
+    $scope.dateRanges = [{span:"Today",class:""}, {span:"5D",class:""}, {span:"1M",class:""}];//TODO ADD "DATE"
+    $scope.dateRanges[0].class = "selected";
     $scope.selectedRange = $scope.dateRanges[0];
 
-    $scope.setRange = function(range){
-    	$scope.selectedRange = range;
 
+    $scope.setRange = function(range){
+    	$scope.selectedRange = range.span;
+    	for (var i = $scope.dateRanges.length - 1; i >= 0; i--) {
+    		if($scope.dateRanges[i].span != range.span){
+    			$scope.dateRanges[i].class = "";
+    		}else{
+    			$scope.dateRanges[i].class = "selected";
+    		}
+    	}
     }
 
     $scope.autoComplete = function() {
@@ -72,7 +79,7 @@ application.controller("profitController", function($scope, $http, $filter, apiD
                 $scope.trades = calculation.trades;
                 $scope.initialInvestment = calculation.initialInvestment;
                 $scope.grossReturn = calculation.grossReturn;
-                $scope.profit = calculation.grossReturn - calculation.initialInvestment;
+                $scope.profit = (calculation.grossReturn - calculation.initialInvestment).toFixed(2);
                 $scope.percentage = $scope.symbol.toUpperCase();
                 $scope.stockSymbol = $scope.symbol.toUpperCase();
             } else {

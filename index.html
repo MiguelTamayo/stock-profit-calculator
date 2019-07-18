@@ -20,51 +20,74 @@
 	</head>
 	<body ng-controller="profitController">
 		<div class="container">
+
+			<!-- Search Bar -->
 			<div class="row">
-				<div class="col-md-12" id="search-bar">
-					<input type="text" id="search" ng-model="symbol" placeholder="Search Stock Symbol" ng-keydown="arrowKeyControls($event)" ng-keyup="searchControls($event)">
-					<ul class="results">
-						<li ng-repeat="result in results" ng-class="result.class">
-							<span ng-bind="result.symbol"></span> | <span ng-bind="result.name"></span>
-						</li>
-					</ul>
+				<div class="col-md-12">
+					<div id="search">
+						<input type="text" id="searchBar" ng-model="symbol" placeholder="Search Stock Symbol" ng-keydown="arrowKeyControls($event)" ng-keyup="searchControls($event)">
+					</div>
 				</div>
 			</div>
+			<!-- Search Results -->
 			<div class="row">
-				<div class="col-md-12" id="date-range">
-					<ul>
-						<li ng-repeat="range in dateRanges" ng-click="setRange(range)" ng-style="">
-							<span ng-bind="range"></span>
-						</li>
-					</ul>
+				<div class="col-md-12">
+					<div>
+						<ul id="results">
+							<li ng-repeat="result in results" ng-class="result.class">
+								<span ng-bind="result.symbol"></span> | <span ng-bind="result.name"></span>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-8" id="line-graph">
-					<p>graph</p>
-					<div zingchart id="chart-1" zc-json="chartJson" zc-width="100%" zc-height="568px"></div>
-				</div>
-				<div class="col-md-4" id="profit">
-					<p>Symbol: <span ng-bind="stockSymbol"></span></p>
-					<p>Initial Investment: $<span ng-bind="initialInvestment"></span></p>
-					<p>Gross Return: $<span ng-bind="grossReturn"></span></p>
-					<p>Profit: $<span ng-bind="profit"></span></p>
+			<!-- Search Date Range -->
+			<div class="row bottom-buffer">
+				<div class="col-md-12">
+					<div id="date">
+						<ul id="date-range">
+							<li ng-repeat="range in dateRanges" ng-click="setRange(range)" ng-class="range.class">
+								<span ng-bind="range.span"></span>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
+
+			<!-- Chart & Calculations -->
+			<div class="row no-gutters bottom-buffer">
+				<!-- Chart -->
+				<div class="col-md-8 right-buffer">
+					<div id="line-graph">
+						<p>Graph:</p>
+						<div zingchart id="chart-1" zc-json="chartJson" zc-width="100%" zc-height="568px"></div>
+					</div>
+				</div>
+				<!-- Calculations -->
+				<div class="col-md-4">
+					<div id="profit">
+						<p>Symbol: <span ng-bind="stockSymbol"></span></p>
+						<p>Initial Investment: $<span ng-bind="initialInvestment"></span></p>
+						<p>Gross Return: $<span ng-bind="grossReturn"></span></p>
+						<p>Profit: $<span ng-bind="profit"></span></p>
+					</div>
+				</div>
+			</div>
+			<!-- Trades & Footer -->
 			<div class="row">
-				<div class="col-md-12" id="time-stamps">
-					<p>time stamps of trades made</p>
-					<div id="trades">
-						<p ng-repeat="trade in trades track by $index" ng-bind="trade.tradeMessage"></p>
+				<div class="col-md-12">
+					<div id="time-stamps">
+						<p>Time stamps of trades made:</p>
+						<div id="trades">
+							<p ng-repeat="trade in trades track by $index" ng-bind="trade.tradeMessage"></p>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12" id="footer">
-					<p>placeholder text</p>
 					<a href="https://iexcloud.io">Data provided by IEX Cloud</a>
 				</div>
 			</div>
-		</div>
 	</body>
 </html>
