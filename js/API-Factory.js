@@ -2,14 +2,14 @@ var apiFactory = angular.module('apiFactory', []);
 apiFactory.factory('apiData', ['$http','$filter', function ($http, $filter) {
 
     var apiData = {};
-    var urlBase = 'https://sandbox.iexapis.com/stable';
+    var urlBase = 'https://cloud.iexapis.com/stable';
 
     apiData.getSymbolChart = function(symbol, range, date = null){
     	var endpoint = "";
 
     	if(range == 'Today'){
 			var today = $filter('date')(new Date(), "yyyyMMdd");
-			endpoint = "/stock/"+symbol+"/chart/date/"+today;
+			endpoint = "/stock/"+symbol+"/intraday-prices?chartIEXOnly=true&";
     	}
     	else if(range == '5D'){
 			endpoint = "/stock/"+symbol+"/chart/5d";
@@ -28,11 +28,15 @@ apiFactory.factory('apiData', ['$http','$filter', function ($http, $filter) {
 
     	console.log("URL: "+urlBase+endpoint);
 
-    	return $http.get(""+urlBase+endpoint+"?token=TOKEN_HERE");
+    	if(range == 'Today'){
+            return $http.get(""+urlBase+endpoint+"token=TOKEN_HERE");
+        }else{
+            return $http.get(""+urlBase+endpoint+"?token=TOKEN_HERE");
+        }
     };
 
     apiData.getSymbolList = function(){
-    	var url = "https://sandbox.iexapis.com/stable/ref-data/symbols?token=TOKEN_HERE";
+    	var url = "https://cloud.iexapis.com/stable/ref-data/symbols?token=TOKEN_HERE";
     	return $http.get(url);
     };
 
